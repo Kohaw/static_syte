@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /css/
+Disallow: /js/
+Sitemap: https://kohaw.github.io/static_syte/sitemap.xml
