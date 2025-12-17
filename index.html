@@ -3,72 +3,2525 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Халушев Джал | Портфолио студента и начинающего IT-специалиста</title>
-    <meta name="description" content="Сайт-портфолио Халушева Джала. Проекты и навыки в области веб-разработки и информационных технологий. Адаптивный дизайн, современные технологии.">
-    <link rel="stylesheet" href="style.css">
+    <title>EduLens - VR/AR образовательная платформа</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4A6FA5;
+            --primary-dark: #385D8A;
+            --secondary: #166088;
+            --accent: #FF7F11;
+            --accent-dark: #E06D00;
+            --success: #2E8B57;
+            --warning: #FFA500;
+            --danger: #DC143C;
+            --dark: #1C1C2E;
+            --light: #F8F9FA;
+            --gray: #6C757D;
+            --border: #E0E0E0;
+            --vr-bg: #0A192F;
+            --ar-bg: #1A3A5F;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Мобильная навигация */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 15px 20px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .burger-menu {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .burger-icon {
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .burger-icon.active {
+            transform: rotate(90deg);
+        }
+
+        .mobile-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .mobile-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mobile-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 70px;
+            left: -100%;
+            width: 250px;
+            height: calc(100vh - 70px);
+            background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transition: left 0.3s ease;
+            z-index: 999;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .mobile-menu.active {
+            left: 0;
+        }
+
+        .mobile-nav-item {
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .mobile-nav-item:hover, .mobile-nav-item.active {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: white;
+            border-left-color: var(--accent);
+        }
+
+        .mobile-nav-item i {
+            font-size: 20px;
+            width: 25px;
+            text-align: center;
+        }
+
+        .badge {
+            background-color: var(--accent);
+            color: white;
+            border-radius: 12px;
+            padding: 2px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        /* Основная структура */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Боковая панель (десктоп) */
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            transition: width 0.3s;
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo {
+            padding: 30px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo-icon {
+            font-size: 32px;
+            color: var(--accent);
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 20px 0;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            width: 100%;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            padding: 18px 25px;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.12);
+            color: white;
+            border-left-color: var(--accent);
+        }
+
+        .nav-link i {
+            font-size: 20px;
+            width: 25px;
+            margin-right: 15px;
+        }
+
+        .user-profile {
+            padding: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .user-info h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .user-info p {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* Основной контент */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .top-bar {
+            height: 80px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+            z-index: 10;
+        }
+
+        .page-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: #F0F4F8;
+            border-radius: 25px;
+            padding: 12px 20px;
+            width: 400px;
+            transition: all 0.3s;
+        }
+
+        .search-bar:focus-within {
+            box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
+            background-color: white;
+        }
+
+        .search-bar input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 100%;
+            font-size: 16px;
+            margin-left: 10px;
+            color: var(--dark);
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .icon-btn {
+            position: relative;
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: var(--gray);
+            cursor: pointer;
+            transition: color 0.3s;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-btn:hover {
+            background-color: #F0F4F8;
+            color: var(--primary);
+        }
+
+        .notification-count {
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            background-color: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            background-color: #F5F7FB;
+        }
+
+        /* Страницы */
+        .page {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* VR/AR Урок - Специальный дизайн */
+        .ar-vr-lesson-container {
+            display: flex;
+            gap: 30px;
+            height: calc(100vh - 140px);
+        }
+
+        .vr-environment {
+            flex: 2;
+            background-color: var(--vr-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .vr-header {
+            padding: 20px 25px;
+            background-color: rgba(26, 58, 95, 0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .vr-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .vr-title i {
+            color: var(--accent);
+        }
+
+        .vr-status {
+            display: flex;
+            gap: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+
+        .vr-scene {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .scene-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #1A3A5F 0%, #0A192F 70%);
+            opacity: 0.9;
+        }
+
+        .grid-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        .vr-object-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            perspective: 1200px;
+        }
+
+        .engine-3d {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(15deg) rotateY(0deg);
+            transition: transform 0.5s ease;
+        }
+
+        .engine-part {
+            position: absolute;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #4A6FA5 0%, #166088 100%);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .engine-part:hover {
+            background: linear-gradient(135deg, #FF7F11 0%, #E06D00 100%);
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .part-label {
+            position: absolute;
+            bottom: -25px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            white-space: nowrap;
+        }
+
+        .engine-part:hover .part-label {
+            opacity: 1;
+        }
+
+        /* Позиции деталей двигателя */
+        .block { width: 250px; height: 180px; transform: translateZ(0px); }
+        .crankshaft { width: 220px; height: 40px; transform: translateZ(50px); background: linear-gradient(135deg, #78909C 0%, #546E7A 100%); }
+        .piston-1 { width: 50px; height: 70px; transform: translate(40px, -60px) translateZ(25px); background: linear-gradient(135deg, #B0BEC5 0%, #78909C 100%); }
+        .piston-2 { width: 50px; height: 70px; transform: translate(-40px, -60px) translateZ(25px); background: linear-gradient(135deg, #B0BEC5 0%, #78909C 100%); }
+        .valve-1 { width: 25px; height: 40px; transform: translate(80px, -100px) translateZ(50px); background: linear-gradient(135deg, #FF7F11 0%, #E06D00 100%); }
+        .valve-2 { width: 25px; height: 40px; transform: translate(-80px, -100px) translateZ(50px); background: linear-gradient(135deg, #FF7F11 0%, #E06D00 100%); }
+
+        .vr-controls {
+            padding: 20px 25px;
+            background-color: rgba(26, 58, 95, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .vr-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(74, 111, 165, 0.8) 0%, rgba(22, 96, 136, 0.8) 100%);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vr-btn:hover {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 127, 17, 0.3);
+        }
+
+        .vr-btn i {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .vr-btn.active {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            box-shadow: 0 0 20px rgba(255, 127, 17, 0.5);
+        }
+
+        .lesson-panel {
+            flex: 1;
+            background-color: white;
+            border-radius: 20px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            min-width: 350px;
+        }
+
+        .panel-header {
+            margin-bottom: 25px;
+        }
+
+        .panel-header h3 {
+            font-size: 22px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .panel-header p {
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        .lesson-progress {
+            background-color: #F0F4F8;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: #DCE4EF;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-dark) 100%);
+            border-radius: 5px;
+            transition: width 1s ease;
+            width: 65%;
+        }
+
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .lesson-steps {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            background-color: #F8FAFC;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .step-item:hover {
+            background-color: #E8F0FE;
+            transform: translateX(5px);
+        }
+
+        .step-item.active {
+            background-color: #E8F0FE;
+            border-color: var(--primary);
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .step-item.active .step-number {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+
+        .step-desc {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .step-status {
+            margin-left: 15px;
+            color: var(--success);
+            font-size: 20px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .step-item.completed .step-status {
+            opacity: 1;
+        }
+
+        /* Стили для уроков из первого примера */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .course-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .course-image {
+            height: 150px;
+            background-color: #E6F0FF;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-category {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .course-content {
+            padding: 20px;
+        }
+
+        .course-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .course-description {
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .course-duration {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .course-level {
+            background-color: #E6F0FF;
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .course-progress {
+            margin-top: 15px;
+        }
+
+        .progress-bar-sm {
+            height: 6px;
+            background-color: #E0E0E0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill-sm {
+            height: 100%;
+            background-color: var(--success);
+            border-radius: 3px;
+        }
+
+        /* Страница 3: Дашборд из первого примера */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .dashboard-card {
+            background-color: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: #F0F4F8;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .heatmap {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .heatmap-cell {
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .heatmap-cell:hover {
+            transform: scale(1.1);
+        }
+
+        .heatmap-legend {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+        }
+
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+        }
+
+        .student-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .student-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            background-color: #f8f9fa;
+        }
+
+        .student-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .student-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .student-name {
+            font-weight: 600;
+        }
+
+        .student-progress {
+            width: 100px;
+            height: 8px;
+            background-color: #E0E0E0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .student-progress-fill {
+            height: 100%;
+            background-color: var(--primary);
+            border-radius: 4px;
+        }
+
+        /* Страница 4: Библиотека из первого примера */
+        .library-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 2px solid var(--border);
+            background-color: white;
+            color: var(--gray);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .module-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .module-header {
+            padding: 20px;
+            background-color: #E6F0FF;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .module-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .module-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .module-content {
+            padding: 20px;
+        }
+
+        .module-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .module-description {
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .module-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        /* Страница 5: Профиль из первого примера */
+        .profile-container {
+            display: flex;
+            gap: 30px;
+        }
+
+        .profile-sidebar {
+            width: 300px;
+            background-color: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: 700;
+            margin: 0 auto 15px;
+        }
+
+        .profile-name {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .profile-role {
+            color: var(--gray);
+            font-size: 16px;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .profile-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .profile-stat-label {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .profile-content {
+            flex: 1;
+            background-color: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .settings-section {
+            margin-bottom: 30px;
+        }
+
+        .settings-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .settings-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 70px;
+            }
+            
+            .logo-text, .nav-link span, .user-info {
+                display: none;
+            }
+            
+            .logo {
+                padding: 25px 0;
+                justify-content: center;
+            }
+            
+            .nav-link {
+                padding: 18px 0;
+                justify-content: center;
+                border-left: none;
+                border-right: 3px solid transparent;
+            }
+            
+            .nav-link:hover, .nav-link.active {
+                border-right-color: var(--accent);
+                border-left: none;
+            }
+            
+            .nav-link i {
+                margin-right: 0;
+            }
+            
+            .user-profile {
+                padding: 25px 0;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .mobile-nav {
+                display: block;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .top-bar {
+                margin-top: 70px;
+                height: 70px;
+            }
+            
+            .content-area {
+                padding: 20px;
+            }
+            
+            .ar-vr-lesson-container {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .vr-environment {
+                height: 500px;
+            }
+            
+            .lesson-panel {
+                min-width: auto;
+            }
+            
+            .search-bar {
+                width: 300px;
+            }
+
+            .dashboard-grid, .courses-grid, .modules-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+
+            .profile-container {
+                flex-direction: column;
+            }
+
+            .profile-sidebar {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-bar {
+                flex-direction: column;
+                height: auto;
+                padding: 15px 20px;
+                gap: 15px;
+            }
+            
+            .search-bar {
+                width: 100%;
+            }
+            
+            .vr-environment {
+                height: 400px;
+            }
+            
+            .vr-object-container {
+                width: 300px;
+                height: 300px;
+            }
+
+            .library-controls {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .vr-controls {
+                flex-wrap: wrap;
+            }
+            
+            .vr-btn {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .vr-object-container {
+                width: 250px;
+                height: 250px;
+            }
+
+            .dashboard-grid, .courses-grid, .modules-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-buttons {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <div class="profile">
-                 <!-- ВСТАВЬТЕ ЭТОТ КОД ДЛЯ ИЗОБРАЖЕНИЯ -->
-    <img src="profile-image.jpg" 
-         alt="Халушев Джал, студент РГУ им. А.Н. Косыгина" 
-         class="profile-photo">
-                <h1 class="name">Халушев Джал</h1>
-                <p class="title">Студент РГУ им. А.Н. Косыгина</p>
-                <p class="subtitle">Направление: Информационные системы и технологии</p>
+    <!-- Мобильная навигация -->
+    <div class="mobile-nav">
+        <div class="burger-menu">
+            <div class="burger-icon" id="burgerBtn">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="mobile-logo">
+                <i class="fas fa-vr-cardboard"></i>
+                <span>EduLens</span>
+            </div>
+            <div class="mobile-user">
+                <div class="mobile-avatar">ДХ</div>
             </div>
         </div>
-    </header>
+    </div>
 
-    <main class="container">
-        <section class="section projects">
-            <h2><i class="fas fa-project-diagram"></i> Учебные и личные проекты</h2>
-            <div class="project-grid">
-                <div class="project-card">
-                    <h3>Сайт-портфолио</h3>
-                    <p>Личный сайт-портфолио с адаптивным дизайном, созданный в рамках лабораторных работ по веб-разработке.</p>
-                    <div class="tech-tags">
-                        <span class="tech-tag">HTML</span>
-                        <span class="tech-tag">CSS</span>
-                        <span class="tech-tag">JavaScript</span>
-                        <span class="tech-tag">GitHub Pages</span>
+    <!-- Мобильное меню -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#" class="mobile-nav-item active" data-page="home">
+            <i class="fas fa-home"></i>
+            <span>Главная</span>
+        </a>
+        <a href="#" class="mobile-nav-item" data-page="vr-lesson">
+            <i class="fas fa-vr-cardboard"></i>
+            <span>VR/AR Урок</span>
+            <span class="badge">NEW</span>
+        </a>
+        <a href="#" class="mobile-nav-item" data-page="dashboard">
+            <i class="fas fa-chart-bar"></i>
+            <span>Дашборд</span>
+        </a>
+        <a href="#" class="mobile-nav-item" data-page="library">
+            <i class="fas fa-cube"></i>
+            <span>Библиотека</span>
+        </a>
+        <a href="#" class="mobile-nav-item" data-page="profile">
+            <i class="fas fa-user"></i>
+            <span>Профиль</span>
+        </a>
+    </div>
+
+    <div class="app-container">
+        <!-- Боковая панель для десктопа -->
+        <div class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-vr-cardboard"></i>
+                </div>
+                <div class="logo-text">EduLens</div>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" data-page="home">
+                        <i class="fas fa-home"></i>
+                        <span>Главная</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="vr-lesson">
+                        <i class="fas fa-vr-cardboard"></i>
+                        <span>VR/AR Урок</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="dashboard">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Дашборд</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="library">
+                        <i class="fas fa-cube"></i>
+                        <span>Библиотека</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="profile">
+                        <i class="fas fa-user"></i>
+                        <span>Профиль</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="user-profile">
+                <div class="avatar">ДХ</div>
+                <div class="user-info">
+                    <h4>Джал Халушев</h4>
+                    <p>Студент • Инженер</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Основной контент -->
+        <div class="main-content">
+            <!-- Верхняя панель -->
+            <div class="top-bar">
+                <div class="page-title" id="pageTitle">
+                    <i class="fas fa-home"></i>
+                    <span>Главная</span>
+                </div>
+                
+                <div class="search-bar">
+                    <i class="fas fa-search" style="color: var(--gray);"></i>
+                    <input type="text" placeholder="Поиск курсов, уроков, материалов...">
+                </div>
+                
+                <div class="top-actions">
+                    <button class="icon-btn" title="Уведомления">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count">3</span>
+                    </button>
+                    <button class="icon-btn" title="Настройки">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <button class="icon-btn" title="Помощь">
+                        <i class="fas fa-question-circle"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Область контента -->
+            <div class="content-area">
+                <!-- Главная страница -->
+                <div class="page active" id="home-page">
+                    <h1 style="margin-bottom: 30px; color: var(--dark); font-size: 32px;">Добро пожаловать, Джал!</h1>
+                    
+                    <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; border-radius: 20px; padding: 30px; margin-bottom: 40px;">
+                        <h2 style="font-size: 28px; margin-bottom: 15px;">Исследуйте мир через VR/AR</h2>
+                        <p style="font-size: 18px; opacity: 0.9; margin-bottom: 25px;">Погрузитесь в иммерсивное обучение с помощью виртуальной и дополненной реальности</p>
+                        <button class="btn-start" onclick="switchPage('vr-lesson')" style="background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%); color: white; border: none; padding: 15px 30px; border-radius: 15px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-play"></i>
+                            Начать VR/AR урок
+                        </button>
+                    </div>
+                    
+                    <h2 style="margin-bottom: 25px; font-size: 26px; color: var(--dark);">Популярные курсы</h2>
+                    
+                    <div class="courses-grid">
+                        <div class="course-card" onclick="switchPage('vr-lesson')" data-course="engine">
+                            <div class="course-image" style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);">
+                                <div class="course-category">Инженерия</div>
+                            </div>
+                            <div class="course-content">
+                                <div class="course-title">Устройство двигателя V8</div>
+                                <div class="course-description">Интерактивное изучение конструкции и принципов работы двигателя V8 через VR/AR.</div>
+                                <div class="course-meta">
+                                    <div class="course-duration">
+                                        <i class="far fa-clock"></i>
+                                        <span>2 ч 30 мин</span>
+                                    </div>
+                                    <div class="course-level">Средний</div>
+                                </div>
+                                <div class="course-progress">
+                                    <div class="progress-bar-sm">
+                                        <div class="progress-fill-sm" style="width: 75%;"></div>
+                                    </div>
+                                    <div style="text-align: right; font-size: 12px; margin-top: 5px; color: var(--gray);">75% завершено</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="course-card" onclick="alert('Скоро будет доступно!')" data-course="anatomy">
+                            <div class="course-image" style="background: linear-gradient(135deg, #DC143C 0%, #B22222 100%);">
+                                <div class="course-category">Медицина</div>
+                            </div>
+                            <div class="course-content">
+                                <div class="course-title">Анатомия сердца</div>
+                                <div class="course-description">Изучение строения и работы сердца человека с помощью 3D-моделей в AR.</div>
+                                <div class="course-meta">
+                                    <div class="course-duration">
+                                        <i class="far fa-clock"></i>
+                                        <span>1 ч 45 мин</span>
+                                    </div>
+                                    <div class="course-level">Начальный</div>
+                                </div>
+                                <div class="course-progress">
+                                    <div class="progress-bar-sm">
+                                        <div class="progress-fill-sm" style="width: 30%;"></div>
+                                    </div>
+                                    <div style="text-align: right; font-size: 12px; margin-top: 5px; color: var(--gray);">30% завершено</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="course-card" onclick="alert('Скоро будет доступно!')" data-course="chemistry">
+                            <div class="course-image" style="background: linear-gradient(135deg, #2E8B57 0%, #1E6B47 100%);">
+                                <div class="course-category">Химия</div>
+                            </div>
+                            <div class="course-content">
+                                <div class="course-title">Органическая химия</div>
+                                <div class="course-description">Визуализация молекулярных структур и химических реакций в VR-среде.</div>
+                                <div class="course-meta">
+                                    <div class="course-duration">
+                                        <i class="far fa-clock"></i>
+                                        <span>3 ч 15 мин</span>
+                                    </div>
+                                    <div class="course-level">Продвинутый</div>
+                                </div>
+                                <div class="course-progress">
+                                    <div class="progress-bar-sm">
+                                        <div class="progress-fill-sm" style="width: 90%;"></div>
+                                    </div>
+                                    <div style="text-align: right; font-size: 12px; margin-top: 5px; color: var(--gray);">90% завершено</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="project-card">
-                    <h3>Интернет-магазин</h3>
-                    <p>Учебный проект интернет-магазина электроники с функционалом корзины и оформления заказа.</p>
-                    <div class="tech-tags">
-                        <span class="tech-tag">HTML</span>
-                        <span class="tech-tag">CSS</span>
-                        <span class="tech-tag">Bootstrap</span>
-                        <span class="tech-tag">PHP</span>
+                
+                <!-- VR/AR Урок -->
+                <div class="page" id="vr-lesson-page">
+                    <div class="ar-vr-lesson-container">
+                        <div class="vr-environment">
+                            <div class="vr-header">
+                                <div class="vr-title">
+                                    <i class="fas fa-vr-cardboard"></i>
+                                    VR/AR Урок: Двигатель V8
+                                </div>
+                                <div class="vr-status">
+                                    <span>🕐 45 мин</span>
+                                    <span>🎯 Средний</span>
+                                    <span>👤 1/1</span>
+                                </div>
+                            </div>
+                            
+                            <div class="vr-scene">
+                                <div class="scene-background"></div>
+                                <div class="grid-pattern"></div>
+                                
+                                <div class="vr-object-container" id="engineContainer">
+                                    <div class="engine-3d" id="engine3d">
+                                        <!-- Блок цилиндров -->
+                                        <div class="engine-part block" data-part="block">
+                                            <i class="fas fa-cube"></i>
+                                            <span class="part-label">Блок цилиндров</span>
+                                        </div>
+                                        
+                                        <!-- Коленчатый вал -->
+                                        <div class="engine-part crankshaft" data-part="crankshaft">
+                                            <i class="fas fa-redo"></i>
+                                            <span class="part-label">Коленчатый вал</span>
+                                        </div>
+                                        
+                                        <!-- Поршни -->
+                                        <div class="engine-part piston-1" data-part="piston1">
+                                            <i class="fas fa-weight-hanging"></i>
+                                            <span class="part-label">Поршень 1</span>
+                                        </div>
+                                        
+                                        <div class="engine-part piston-2" data-part="piston2">
+                                            <i class="fas fa-weight-hanging"></i>
+                                            <span class="part-label">Поршень 2</span>
+                                        </div>
+                                        
+                                        <!-- Клапаны -->
+                                        <div class="engine-part valve-1" data-part="valve1">
+                                            <i class="fas fa-filter"></i>
+                                            <span class="part-label">Впускной клапан</span>
+                                        </div>
+                                        
+                                        <div class="engine-part valve-2" data-part="valve2">
+                                            <i class="fas fa-filter"></i>
+                                            <span class="part-label">Выпускной клапан</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="vr-controls">
+                                <button class="vr-btn" id="btnRotate" onclick="toggleRotation()">
+                                    <i class="fas fa-sync-alt"></i>
+                                    <span>Вращение</span>
+                                </button>
+                                
+                                <button class="vr-btn" id="btnDisassemble" onclick="disassembleEngine()">
+                                    <i class="fas fa-cogs"></i>
+                                    <span>Разобрать</span>
+                                </button>
+                                
+                                <button class="vr-btn" id="btnAssemble" onclick="assembleEngine()">
+                                    <i class="fas fa-puzzle-piece"></i>
+                                    <span>Собрать</span>
+                                </button>
+                                
+                                <button class="vr-btn" onclick="startEngine()">
+                                    <i class="fas fa-play"></i>
+                                    <span>Запустить</span>
+                                </button>
+                                
+                                <button class="vr-btn" onclick="showInfo()">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Информация</span>
+                                </button>
+
+                                <button class="vr-btn" onclick="runTest()">
+                                    <i class="fas fa-question-circle"></i>
+                                    <span>Тест</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="lesson-panel">
+                            <div class="panel-header">
+                                <h3>Шаги урока</h3>
+                                <p>Изучите устройство двигателя V8, взаимодействуя с 3D-моделью в виртуальной среде</p>
+                            </div>
+                            
+                            <div class="lesson-progress">
+                                <div class="progress-info">
+                                    <span>Прогресс урока</span>
+                                    <span id="progressPercent">65%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progressFill"></div>
+                                </div>
+                                <div class="progress-stats">
+                                    <span>Время: 24 мин</span>
+                                    <span>Шаг 4 из 8</span>
+                                </div>
+                            </div>
+                            
+                            <div class="lesson-steps">
+                                <div class="step-item active" data-step="1">
+                                    <div class="step-number">1</div>
+                                    <div class="step-content">
+                                        <div class="step-title">Внешнее строение</div>
+                                        <div class="step-desc">Ознакомление с внешними компонентами двигателя</div>
+                                    </div>
+                                    <div class="step-status">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="step-item completed" data-step="2">
+                                    <div class="step-number">2</div>
+                                    <div class="step-content">
+                                        <div class="step-title">Блок цилиндров</div>
+                                        <div class="step-desc">Изучение основной конструкции двигателя</div>
+                                    </div>
+                                    <div class="step-status">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="step-item completed" data-step="3">
+                                    <div class="step-number">3</div>
+                                    <div class="step-content">
+                                        <div class="step-title">Коленчатый вал</div>
+                                        <div class="step-desc">Принцип преобразования поступательного движения во вращательное</div>
+                                    </div>
+                                    <div class="step-status">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="step-item" data-step="4">
+                                    <div class="step-number">4</div>
+                                    <div class="step-content">
+                                        <div class="step-title">Поршневая система</div>
+                                        <div class="step-desc">Изучение работы поршней и шатунов</div>
+                                    </div>
+                                    <div class="step-status">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="step-item" data-step="5">
+                                    <div class="step-number">5</div>
+                                    <div class="step-content">
+                                        <div class="step-title">Газораспределительный механизм</div>
+                                        <div class="step-desc">Работа клапанов и распределительного вала</div>
+                                    </div>
+                                    <div class="step-status">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="project-card">
-                    <h3>Блог о технологиях</h3>
-                    <p>Тематический блог с системой комментариев, созданный для изучения backend-разработки.</p>
-                    <div class="tech-tags">
-                        <span class="tech-tag">HTML</span>
-                        <span class="tech-tag">CSS</span>
-                        <span class="tech-tag">JavaScript</span>
-                        <span class="tech-tag">Node.js</span>
+                
+                <!-- Дашборд преподавателя (из первого примера) -->
+                <div class="page" id="dashboard-page">
+                    <h2 style="margin-bottom: 25px; font-size: 32px; color: var(--dark);">Дашборд преподавателя</h2>
+                    
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <div class="card-title">Тепловая карта класса</div>
+                                <div class="card-actions">
+                                    <button class="action-btn" onclick="exportHeatmap()">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="heatmap" id="heatmap">
+                                <!-- Тепловая карта будет сгенерирована через JS -->
+                            </div>
+                            <div class="heatmap-legend">
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: var(--success);"></div>
+                                    <span>>80%</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: var(--warning);"></div>
+                                    <span>60-80%</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: var(--danger);"></div>
+                                    <span><60%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <div class="card-title">Студенты, требующие внимания</div>
+                                <div class="card-actions">
+                                    <button class="action-btn">
+                                        <i class="fas fa-filter"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="student-list">
+                                <div class="student-item">
+                                    <div class="student-info">
+                                        <div class="student-avatar">АИ</div>
+                                        <div>
+                                            <div class="student-name">Алексей Иванов</div>
+                                            <div style="font-size: 12px; color: var(--gray);">Затруднения с цилиндрами</div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="student-progress">
+                                            <div class="student-progress-fill" style="width: 45%;"></div>
+                                        </div>
+                                        <div style="text-align: center; font-size: 12px; margin-top: 5px; color: var(--danger);">45%</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="student-item">
+                                    <div class="student-info">
+                                        <div class="student-avatar">МП</div>
+                                        <div>
+                                            <div class="student-name">Мария Петрова</div>
+                                            <div style="font-size: 12px; color: var(--gray);">Низкая активность в AR</div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="student-progress">
+                                            <div class="student-progress-fill" style="width: 58%;"></div>
+                                        </div>
+                                        <div style="text-align: center; font-size: 12px; margin-top: 5px; color: var(--warning);">58%</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="student-item">
+                                    <div class="student-info">
+                                        <div class="student-avatar">ПС</div>
+                                        <div>
+                                            <div class="student-name">Павел Сидоров</div>
+                                            <div style="font-size: 12px; color: var(--gray);">Ошибки в сборке</div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="student-progress">
+                                            <div class="student-progress-fill" style="width: 51%;"></div>
+                                        </div>
+                                        <div style="text-align: center; font-size: 12px; margin-top: 5px; color: var(--warning);">51%</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="student-item">
+                                    <div class="student-info">
+                                        <div class="student-avatar">ЕК</div>
+                                        <div>
+                                            <div class="student-name">Елена Кузнецова</div>
+                                            <div style="font-size: 12px; color: var(--gray);">Прогресс: хороший</div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="student-progress">
+                                            <div class="student-progress-fill" style="width: 82%;"></div>
+                                        </div>
+                                        <div style="text-align: center; font-size: 12px; margin-top: 5px; color: var(--success);">82%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <div class="card-title">Статистика курса</div>
+                                <div class="card-actions">
+                                    <button class="action-btn" onclick="refreshStats()">
+                                        <i class="fas fa-refresh"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div style="text-align: center; padding: 20px 0;">
+                                <div style="font-size: 48px; font-weight: 700; color: var(--primary);">76%</div>
+                                <div style="color: var(--gray); margin-bottom: 20px;">Средняя успеваемость</div>
+                                
+                                <div style="display: flex; justify-content: space-around; margin-top: 30px;">
+                                    <div>
+                                        <div style="font-size: 24px; font-weight: 700; color: var(--primary);">85%</div>
+                                        <div style="font-size: 12px; color: var(--gray);">Завершили курс</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 24px; font-weight: 700; color: var(--primary);">24</div>
+                                        <div style="font-size: 12px; color: var(--gray);">Активных студентов</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 24px; font-weight: 700; color: var(--accent);">4.8</div>
+                                        <div style="font-size: 12px; color: var(--gray);">Средняя оценка</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="project-card">
-                    <h3>Панель администратора</h3>
-                    <p>Система управления контентом для сайта с возможностью редактирования статей и пользователей.</p>
-                    <div class="tech-tags">
-                        <span class="tech-tag">React</span>
-                        <span class="tech-tag">Node.js</span>
-                        <span class="tech-tag">MongoDB</span>
-                        <span class="tech-tag">REST API</span>
+                
+                <!-- Библиотека AR-модулей (из первого примера) -->
+                <div class="page" id="library-page">
+                    <h2 style="margin-bottom: 25px; font-size: 32px; color: var(--dark);">Библиотека VR/AR модулей</h2>
+                    
+                    <div class="library-controls">
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" data-filter="all" onclick="filterModules('all')">Все</button>
+                            <button class="filter-btn" data-filter="engineering" onclick="filterModules('engineering')">Инженерия</button>
+                            <button class="filter-btn" data-filter="medicine" onclick="filterModules('medicine')">Медицина</button>
+                            <button class="filter-btn" data-filter="science" onclick="filterModules('science')">Наука</button>
+                            <button class="filter-btn" data-filter="my" onclick="filterModules('my')">Мои модули</button>
+                        </div>
+                        <button class="btn btn-primary" onclick="createNewModule()" style="padding: 12px 25px; background-color: var(--primary); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer;">
+                            <i class="fas fa-plus"></i> Создать модуль
+                        </button>
+                    </div>
+                    
+                    <div class="modules-grid">
+                        <div class="module-card" data-category="engineering">
+                            <div class="module-header">
+                                <div class="module-icon">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <div class="module-actions">
+                                    <button class="action-btn" onclick="editModule('engine')">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="previewModule('engine')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="module-content">
+                                <div class="module-title">Двигатель V8</div>
+                                <div class="module-description">Интерактивное изучение устройства и принципа работы двигателя V8</div>
+                                <div class="module-stats">
+                                    <span><i class="far fa-clock"></i> 45 мин</span>
+                                    <span><i class="fas fa-users"></i> 24 студента</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="module-card" data-category="medicine">
+                            <div class="module-header" style="background-color: #FFEBEE;">
+                                <div class="module-icon" style="background-color: var(--danger);">
+                                    <i class="fas fa-heartbeat"></i>
+                                </div>
+                                <div class="module-actions">
+                                    <button class="action-btn" onclick="editModule('heart')">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="previewModule('heart')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="module-content">
+                                <div class="module-title">Анатомия сердца</div>
+                                <div class="module-description">3D-модель сердца с детализацией камер, клапанов и сосудов</div>
+                                <div class="module-stats">
+                                    <span><i class="far fa-clock"></i> 30 мин</span>
+                                    <span><i class="fas fa-users"></i> 18 студентов</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="module-card" data-category="science">
+                            <div class="module-header" style="background-color: #E8F5E9;">
+                                <div class="module-icon" style="background-color: var(--success);">
+                                    <i class="fas fa-atom"></i>
+                                </div>
+                                <div class="module-actions">
+                                    <button class="action-btn" onclick="editModule('molecule')">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="previewModule('molecule')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="module-content">
+                                <div class="module-title">Молекулярные структуры</div>
+                                <div class="module-description">Визуализация органических молекул и химических связей</div>
+                                <div class="module-stats">
+                                    <span><i class="far fa-clock"></i> 60 мин</span>
+                                    <span><i class="fas fa-users"></i> 32 студента</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="module-card" data-category="engineering">
+                            <div class="module-header">
+                                <div class="module-icon">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <div class="module-actions">
+                                    <button class="action-btn" onclick="editModule('transmission')">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="previewModule('transmission')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="module-content">
+                                <div class="module-title">Трансмиссия</div>
+                                <div class="module-description">Изучение устройства и работы механической трансмиссии</div>
+                                <div class="module-stats">
+                                    <span><i class="far fa-clock"></i> 40 мин</span>
+                                    <span><i class="fas fa-users"></i> 15 студентов</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Профиль пользователя (из первого примера) -->
+                <div class="page" id="profile-page">
+                    <h2 style="margin-bottom: 25px; font-size: 32px; color: var(--dark);">Профиль пользователя</h2>
+                    
+                    <div class="profile-container">
+                        <div class="profile-sidebar">
+                            <div class="profile-header">
+                                <div class="profile-avatar">ДХ</div>
+                                <div class="profile-name">Джал Халушев</div>
+                                <div class="profile-role">Студент • Инженер</div>
+                            </div>
+                            
+                            <div class="profile-stats">
+                                <div>
+                                    <div class="profile-stat-value">12</div>
+                                    <div class="profile-stat-label">Курсов</div>
+                                </div>
+                                <div>
+                                    <div class="profile-stat-value">85%</div>
+                                    <div class="profile-stat-label">Прогресс</div>
+                                </div>
+                                <div>
+                                    <div class="profile-stat-value">156</div>
+                                    <div class="profile-stat-label">Часов</div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 25px;">
+                                <h3 style="font-size: 18px; margin-bottom: 15px;">Настройки</h3>
+                                <div style="display: flex; flex-direction: column; gap: 10px;">
+                                    <button class="btn" onclick="toggleTheme()" style="padding: 12px; text-align: left; background-color: #f0f2f5; border: none; border-radius: 10px; cursor: pointer;">
+                                        <i class="fas fa-moon"></i> Тема оформления
+                                    </button>
+                                    <button class="btn" onclick="showNotifications()" style="padding: 12px; text-align: left; background-color: #f0f2f5; border: none; border-radius: 10px; cursor: pointer;">
+                                        <i class="fas fa-bell"></i> Уведомления
+                                    </button>
+                                    <button class="btn" onclick="showPrivacy()" style="padding: 12px; text-align: left; background-color: #f0f2f5; border: none; border-radius: 10px; cursor: pointer;">
+                                        <i class="fas fa-lock"></i> Конфиденциальность
+                                    </button>
+                                    <button class="btn" onclick="logout()" style="padding: 12px; text-align: left; background-color: #FFEBEE; color: var(--danger); border: none; border-radius: 10px; cursor: pointer;">
+                                        <i class="fas fa-sign-out-alt"></i> Выйти
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-content">
+                            <div class="settings-section">
+                                <div class="settings-title">Личная информация</div>
+                                <div class="settings-group">
+                                    <label class="form-label">Имя и фамилия</label>
+                                    <input type="text" class="form-input" value="Джал Халушев">
+                                </div>
+                                <div class="settings-group">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-input" value="j.halushev@edu.ru">
+                                </div>
+                                <div class="settings-group">
+                                    <label class="form-label">Учебное заведение</label>
+                                    <input type="text" class="form-input" value="МГТУ им. Н.Э. Баумана">
+                                </div>
+                                <div class="settings-group">
+                                    <label class="form-label">Группа</label>
+                                    <input type="text" class="form-input" value="ИТВТ-424">
+                                </div>
+                                <button class="btn btn-primary" onclick="saveProfile()" style="padding: 12px 30px; background-color: var(--primary); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; margin-top: 10px;">
+                                    Сохранить изменения
+                                </button>
+                            </div>
+                            
+                            <div class="settings-section">
+                                <div class="settings-title">Настройки VR/AR</div>
+                                <div class="settings-group">
+                                    <label class="form-label">Качество графики</label>
+                                    <select class="form-input">
+                                        <option>Высокое</option>
+                                        <option selected>Среднее</option>
+                                        <option>Низкое</option>
+                                    </select>
+                                </div>
+                                <div class="settings-group">
+                                    <label class="form-label">
+                                        <input type="checkbox" checked> Виброотклик при взаимодействии
+                                    </label>
+                                </div>
+                                <div class="settings-group">
+                                    <label class="form-label">
+                                        <input type="checkbox" checked> Звуковые эффекты
+                                    </label>
+                                </div>
+                                <div class="settings-group">
+                                    <label class="form-label">
+                                        <input type="checkbox"> Автоматическая загрузка 3D-моделей
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </div>
+
+    <script>
+        // Навигация между страницами
+        function switchPage(pageId) {
+            // Скрываем все страницы
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Показываем выбранную страницу
+            const targetPage = document.getElementById(`${pageId}-page`);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                
+                // Обновляем заголовок
+                const pageTitle = document.getElementById('pageTitle');
+                const pageNames = {
+                    'home': 'Главная',
+                    'vr-lesson': 'VR/AR Урок',
+                    'dashboard': 'Дашборд',
+                    'library': 'Библиотека',
+                    'profile': 'Профиль'
+                };
+                
+                pageTitle.innerHTML = `<i class="fas fa-${getPageIcon(pageId)}"></i><span>${pageNames[pageId] || 'Страница'}</span>`;
+                
+                // Обновляем активную ссылку в меню
+                updateActiveLink(pageId);
+                
+                // Закрываем мобильное меню если оно открыто
+                closeMobileMenu();
+                
+                // Генерируем тепловую карту если открыт дашборд
+                if (pageId === 'dashboard') {
+                    generateHeatmap();
+                }
+            }
+        }
+        
+        function getPageIcon(pageId) {
+            const icons = {
+                'home': 'home',
+                'vr-lesson': 'vr-cardboard',
+                'dashboard': 'chart-bar',
+                'library': 'cube',
+                'profile': 'user'
+            };
+            return icons[pageId] || 'file';
+        }
+        
+        function updateActiveLink(pageId) {
+            // Обновляем десктопное меню
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-page') === pageId) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Обновляем мобильное меню
+            document.querySelectorAll('.mobile-nav-item').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-page') === pageId) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        // Мобильное меню
+        const burgerBtn = document.getElementById('burgerBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileLinks = document.querySelectorAll('.mobile-nav-item');
+        
+        burgerBtn.addEventListener('click', function() {
+            this.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            
+            // Анимация иконки бургера
+            const icon = this.querySelector('i');
+            if (this.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+        
+        function closeMobileMenu() {
+            burgerBtn.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            const icon = burgerBtn.querySelector('i');
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        }
+        
+        // Обработка кликов по ссылкам в мобильном меню
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const pageId = this.getAttribute('data-page');
+                switchPage(pageId);
+            });
+        });
+        
+        // Обработка кликов по ссылкам в десктопном меню
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const pageId = this.getAttribute('data-page');
+                switchPage(pageId);
+            });
+        });
+        
+        // Обработка выбора курсов на главной странице
+        document.querySelectorAll('.course-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const course = this.getAttribute('data-course');
+                if (course === 'engine') {
+                    switchPage('vr-lesson');
+                } else {
+                    alert('Этот курс скоро будет доступен!');
+                }
+            });
+        });
+        
+        // Функции для VR/AR урока
+        let isRotating = false;
+        let rotationInterval;
+        let isDisassembled = false;
+        let currentProgress = 65;
+        
+        function toggleRotation() {
+            const engine = document.getElementById('engine3d');
+            const btn = document.getElementById('btnRotate');
+            
+            if (!isRotating) {
+                // Начинаем вращение
+                let rotationY = 0;
+                rotationInterval = setInterval(() => {
+                    rotationY += 1;
+                    engine.style.transform = `rotateX(15deg) rotateY(${rotationY}deg)`;
+                }, 50);
+                
+                btn.classList.add('active');
+                isRotating = true;
+            } else {
+                // Останавливаем вращение
+                clearInterval(rotationInterval);
+                btn.classList.remove('active');
+                isRotating = false;
+            }
+        }
+        
+        function disassembleEngine() {
+            if (isDisassembled) return;
+            
+            const engine = document.getElementById('engine3d');
+            const parts = engine.querySelectorAll('.engine-part');
+            const btn = document.getElementById('btnDisassemble');
+            
+            // Анимация разборки
+            parts.forEach((part, index) => {
+                const partType = part.getAttribute('data-part');
+                setTimeout(() => {
+                    part.style.transition = 'transform 1s ease';
+                    
+                    switch(partType) {
+                        case 'piston1':
+                            part.style.transform = 'translate(100px, -150px) translateZ(100px)';
+                            break;
+                        case 'piston2':
+                            part.style.transform = 'translate(-100px, -150px) translateZ(100px)';
+                            break;
+                        case 'valve1':
+                            part.style.transform = 'translate(150px, -200px) translateZ(150px)';
+                            break;
+                        case 'valve2':
+                            part.style.transform = 'translate(-150px, -200px) translateZ(150px)';
+                            break;
+                        case 'crankshaft':
+                            part.style.transform = 'translateZ(150px) rotateZ(45deg)';
+                            break;
+                    }
+                    
+                    // Добавляем эффект "выделения"
+                    part.style.boxShadow = '0 0 20px rgba(255, 127, 17, 0.7)';
+                    
+                    setTimeout(() => {
+                        part.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.3)';
+                    }, 1000);
+                    
+                }, index * 300);
+            });
+            
+            btn.classList.add('active');
+            document.getElementById('btnAssemble').classList.remove('active');
+            isDisassembled = true;
+            
+            // Обновляем прогресс
+            updateProgress(10);
+            
+            // Обновляем шаги
+            completeStep(4);
+        }
+        
+        function assembleEngine() {
+            if (!isDisassembled) return;
+            
+            const engine = document.getElementById('engine3d');
+            const parts = engine.querySelectorAll('.engine-part');
+            const btn = document.getElementById('btnAssemble');
+            
+            // Анимация сборки
+            parts.forEach((part, index) => {
+                const partType = part.getAttribute('data-part');
+                setTimeout(() => {
+                    part.style.transition = 'transform 1s ease';
+                    
+                    // Возвращаем детали на место
+                    switch(partType) {
+                        case 'piston1':
+                            part.style.transform = 'translate(40px, -60px) translateZ(25px)';
+                            break;
+                        case 'piston2':
+                            part.style.transform = 'translate(-40px, -60px) translateZ(25px)';
+                            break;
+                        case 'valve1':
+                            part.style.transform = 'translate(80px, -100px) translateZ(50px)';
+                            break;
+                        case 'valve2':
+                            part.style.transform = 'translate(-80px, -100px) translateZ(50px)';
+                            break;
+                        case 'crankshaft':
+                            part.style.transform = 'translateZ(50px)';
+                            break;
+                    }
+                    
+                    // Добавляем эффект "подсветки"
+                    part.style.boxShadow = '0 0 20px rgba(46, 139, 87, 0.7)';
+                    
+                    setTimeout(() => {
+                        part.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.3)';
+                    }, 1000);
+                    
+                }, index * 300);
+            });
+            
+            btn.classList.add('active');
+            document.getElementById('btnDisassemble').classList.remove('active');
+            isDisassembled = false;
+            
+            // Обновляем прогресс
+            updateProgress(15);
+            
+            // Обновляем шаги
+            completeStep(5);
+        }
+        
+        function startEngine() {
+            // Анимация запуска двигателя
+            const engine = document.getElementById('engine3d');
+            const pistons = document.querySelectorAll('.piston-1, .piston-2');
+            
+            // Быстрое вращение
+            if (isRotating) {
+                clearInterval(rotationInterval);
+            }
+            
+            let rotationY = 0;
+            let speed = 5;
+            rotationInterval = setInterval(() => {
+                rotationY += speed;
+                engine.style.transform = `rotateX(15deg) rotateY(${rotationY}deg)`;
+                
+                // Анимация поршней
+                pistons.forEach((piston, index) => {
+                    const offset = index === 0 ? 40 : -40;
+                    const moveY = Math.sin(rotationY * Math.PI / 180) * 30;
+                    piston.style.transform = `translate(${offset}px, ${-60 + moveY}px) translateZ(25px)`;
+                });
+                
+                // Постепенное замедление
+                if (speed > 0.5) {
+                    speed *= 0.99;
+                }
+            }, 30);
+            
+            isRotating = true;
+            
+            // Визуальные эффекты
+            document.querySelector('.vr-scene').style.animation = 'pulse 2s infinite';
+            
+            setTimeout(() => {
+                clearInterval(rotationInterval);
+                isRotating = false;
+                document.querySelector('.vr-scene').style.animation = '';
+                
+                // Возвращаем поршни на место
+                pistons.forEach((piston, index) => {
+                    const offset = index === 0 ? 40 : -40;
+                    piston.style.transform = `translate(${offset}px, -60px) translateZ(25px)`;
+                });
+            }, 5000);
+            
+            // Обновляем прогресс
+            updateProgress(5);
+        }
+        
+        function runTest() {
+            const score = Math.floor(Math.random() * 30) + 70;
+            alert(`Тест завершен! Ваш результат: ${score}/100\nПравильных ответов: 9 из 10`);
+            updateProgress(5);
+        }
+        
+        function showInfo() {
+            const info = `
+                <strong>Двигатель V8 - технические характеристики:</strong><br><br>
+                • Объем: 4.0 - 6.2 л<br>
+                • Мощность: 300 - 600 л.с.<br>
+                • Количество цилиндров: 8<br>
+                • Расположение цилиндров: V-образное<br>
+                • Тактность: 4-тактный<br>
+                • Система питания: инжекторная<br><br>
+                <em>Вращайте модель для детального изучения. Нажмите на деталь для получения информации.</em>
+            `;
+            
+            alert(info);
+        }
+        
+        function updateProgress(increment) {
+            currentProgress = Math.min(100, currentProgress + increment);
+            document.getElementById('progressPercent').textContent = `${currentProgress}%`;
+            document.getElementById('progressFill').style.width = `${currentProgress}%`;
+        }
+        
+        function completeStep(stepNumber) {
+            const step = document.querySelector(`.step-item[data-step="${stepNumber}"]`);
+            if (step && !step.classList.contains('completed')) {
+                step.classList.add('completed');
+                
+                // Активируем следующий шаг
+                const nextStep = document.querySelector(`.step-item[data-step="${stepNumber + 1}"]`);
+                if (nextStep) {
+                    document.querySelectorAll('.step-item').forEach(s => s.classList.remove('active'));
+                    nextStep.classList.add('active');
+                }
+            }
+        }
+        
+        // Обработка кликов по деталям двигателя
+        document.querySelectorAll('.engine-part').forEach(part => {
+            part.addEventListener('click', function() {
+                const partName = this.getAttribute('data-part');
+                const partLabels = {
+                    'block': 'Блок цилиндров - основная деталь двигателя, содержащая цилиндры',
+                    'crankshaft': 'Коленчатый вал - преобразует поступательное движение поршней во вращательное',
+                    'piston1': 'Поршень - деталь, преобразующая энергию сгорания топлива в механическую работу',
+                    'piston2': 'Поршень - двигается внутри цилиндра, создавая давление',
+                    'valve1': 'Впускной клапан - открывается для впуска топливно-воздушной смеси',
+                    'valve2': 'Выпускной клапан - открывается для выпуска отработанных газов'
+                };
+                
+                alert(partLabels[partName] || 'Информация о детали');
+                
+                // Визуальный эффект
+                this.style.transform += ' scale(1.2)';
+                this.style.transition = 'transform 0.3s';
+                
+                setTimeout(() => {
+                    this.style.transform = this.style.transform.replace(' scale(1.2)', '');
+                }, 300);
+            });
+        });
+        
+        // Функции для дашборда
+        function generateHeatmap() {
+            const heatmap = document.getElementById('heatmap');
+            if (!heatmap) return;
+            
+            heatmap.innerHTML = '';
+            
+            const levels = ['good', 'medium', 'poor'];
+            
+            for (let i = 0; i < 28; i++) {
+                const cell = document.createElement('div');
+                const randomLevel = levels[Math.floor(Math.random() * levels.length)];
+                
+                cell.className = 'heatmap-cell';
+                cell.style.backgroundColor = randomLevel === 'good' ? 'var(--success)' : 
+                                            randomLevel === 'medium' ? 'var(--warning)' : 'var(--danger)';
+                
+                cell.textContent = Math.floor(Math.random() * 100) + '%';
+                
+                cell.addEventListener('click', function() {
+                    alert(`Подробная информация по студенту ${i+1}: ${this.textContent} усвоения материала`);
+                });
+                
+                heatmap.appendChild(cell);
+            }
+        }
+        
+        function exportHeatmap() {
+            alert('Экспорт тепловой карты в формате PDF...\nФайл будет сохранен в папку "Загрузки"');
+        }
+        
+        function refreshStats() {
+            alert('Статистика обновлена!');
+        }
+        
+        // Функции для библиотеки
+        function filterModules(filter) {
+            const modules = document.querySelectorAll('.module-card');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            
+            // Обновляем активную кнопку
+            filterBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-filter') === filter) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            modules.forEach(module => {
+                if (filter === 'all' || module.getAttribute('data-category') === filter) {
+                    module.style.display = 'block';
+                } else {
+                    module.style.display = 'none';
+                }
+            });
+        }
+        
+        function createNewModule() {
+            alert('Открытие конструктора нового VR/AR модуля...\nВ реальном приложении здесь будет открыт редактор сцен');
+        }
+        
+        function editModule(moduleName) {
+            alert(`Редактирование модуля: ${moduleName}\nОткрытие редактора с возможностью изменения 3D-моделей и сценариев`);
+        }
+        
+        function previewModule(moduleName) {
+            alert(`Предпросмотр модуля: ${moduleName}\nЗапуск VR/AR предпросмотрщика`);
+        }
+        
+        // Функции для профиля
+        function saveProfile() {
+            alert('Изменения профиля сохранены');
+        }
+        
+        function toggleTheme() {
+            const body = document.body;
+            if (body.style.backgroundColor === 'rgb(30, 30, 46)') {
+                body.style.backgroundColor = '';
+                body.style.color = '';
+                alert('Переключение на светлую тему');
+            } else {
+                body.style.backgroundColor = '#1A1A2E';
+                body.style.color = 'white';
+                alert('Переключение на темную тему');
+            }
+        }
+        
+        function showNotifications() {
+            alert('Открытие настроек уведомлений...');
+        }
+        
+        function showPrivacy() {
+            alert('Открытие настроек конфиденциальности...');
+        }
+        
+        function logout() {
+            if (confirm('Вы уверены, что хотите выйти из аккаунта?')) {
+                alert('Выход из аккаунта...\nПеренаправление на страницу входа');
+                // В реальном приложении здесь будет редирект на страницу логина
+            }
+        }
+        
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            // Автоматическое вращение двигателя при загрузке страницы урока
+            setTimeout(() => {
+                if (document.getElementById('vr-lesson-page').classList.contains('active')) {
+                    toggleRotation();
+                }
+            }, 1000);
+            
+            // Анимация появления элементов
+            setTimeout(() => {
+                document.querySelectorAll('.engine-part').forEach((part, index) => {
+                    setTimeout(() => {
+                        part.style.opacity = '1';
+                    }, index * 200);
+                });
+            }, 500);
+        });
+        
+        // CSS для анимации пульсации
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { box-shadow: 0 0 0 0 rgba(255, 127, 17, 0.4); }
+                70% { box-shadow: 0 0 0 20px rgba(255, 127, 17, 0); }
+                100% { box-shadow: 0 0 0 0 rgba(255, 127, 17, 0); }
+            }
+            
+            .engine-part {
+                opacity: 0;
+                transition: opacity 0.5s;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>
